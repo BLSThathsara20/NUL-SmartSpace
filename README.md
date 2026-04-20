@@ -1,6 +1,6 @@
 # SmartSpace NUL
 
-**SmartSpace NUL** is a demo dashboard for an AI-powered study space optimisation concept on a university campus. It presents occupancy, energy, predictions, and IoT telemetry in a dark, sustainability-themed interface (emerald accents). All metrics are driven by **local JSON seed data** with a lightweight **live simulation** so values drift over time—no backend or API required.
+**SmartSpace NUL** is a demo dashboard for an AI-powered study space optimisation concept on a university campus. It presents occupancy, energy, predictions, and IoT telemetry in a dark, sustainability-themed interface (emerald accents). All metrics are driven by **local JSON seed data** with a lightweight **live simulation** so values drift over time—no backend or API required..
 
 ## Tech stack
 
