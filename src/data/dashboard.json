@@ -1,0 +1,134 @@
+{
+  "overview": {
+    "stats": {
+      "totalSpaces": 24,
+      "spacesAvailableNow": 9,
+      "energySavedTodayKwh": 47.3,
+      "campusOccupancyPercent": 62
+    },
+    "occupancyByRoom": [
+      { "name": "Library", "percent": 78 },
+      { "name": "Room A101", "percent": 45 },
+      { "name": "Quiet Zone 1", "percent": 92 },
+      { "name": "Computer Lab", "percent": 55 },
+      { "name": "Group Study", "percent": 33 }
+    ],
+    "peakHours": [
+      { "hour": "08:00", "load": 22 },
+      { "hour": "10:00", "load": 58 },
+      { "hour": "12:00", "load": 85 },
+      { "hour": "14:00", "load": 72 },
+      { "hour": "16:00", "load": 64 },
+      { "hour": "18:00", "load": 48 },
+      { "hour": "20:00", "load": 35 }
+    ]
+  },
+  "studySpaces": {
+    "rooms": [
+      {
+        "id": "lib-main",
+        "name": "Library — Main Hall",
+        "type": "Library",
+        "capacity": 120,
+        "occupied": 84,
+        "tempC": 21.5,
+        "lighting": "Auto dim",
+        "hvacZone": "North"
+      },
+      {
+        "id": "a101",
+        "name": "Room A101",
+        "type": "Classroom",
+        "capacity": 40,
+        "occupied": 18,
+        "tempC": 22.1,
+        "lighting": "Bright",
+        "hvacZone": "East"
+      },
+      {
+        "id": "qz1",
+        "name": "Quiet Zone 1",
+        "type": "Quiet",
+        "capacity": 24,
+        "occupied": 22,
+        "tempC": 20.8,
+        "lighting": "Low",
+        "hvacZone": "West"
+      },
+      {
+        "id": "comp-lab",
+        "name": "Computer Lab B2",
+        "type": "Lab",
+        "capacity": 36,
+        "occupied": 20,
+        "tempC": 21.9,
+        "lighting": "Task",
+        "hvacZone": "Basement"
+      },
+      {
+        "id": "grp-3",
+        "name": "Group Study Room 3",
+        "type": "Collaborative",
+        "capacity": 12,
+        "occupied": 4,
+        "tempC": 22.4,
+        "lighting": "Warm",
+        "hvacZone": "South"
+      },
+      {
+        "id": "reading",
+        "name": "Reading Lounge",
+        "type": "Quiet",
+        "capacity": 30,
+        "occupied": 11,
+        "tempC": 21.2,
+        "lighting": "Ambient",
+        "hvacZone": "North"
+      }
+    ]
+  },
+  "energy": {
+    "dailySeries": [
+      { "day": "Mon", "actual": 1820, "baseline": 2100 },
+      { "day": "Tue", "actual": 1755, "baseline": 2080 },
+      { "day": "Wed", "actual": 1690, "baseline": 2120 },
+      { "day": "Thu", "actual": 1788, "baseline": 2095 },
+      { "day": "Fri", "actual": 1710, "baseline": 2070 },
+      { "day": "Sat", "actual": 1240, "baseline": 1850 },
+      { "day": "Sun", "actual": 1188, "baseline": 1820 }
+    ],
+    "co2SavedKg": 312,
+    "breakdown": [
+      { "name": "HVAC", "value": 54 },
+      { "name": "Lighting", "value": 32 },
+      { "name": "Other", "value": 14 }
+    ]
+  },
+  "predictions": {
+    "rooms": ["Library", "A101", "Quiet Z1", "Comp Lab", "Group 3", "Reading"],
+    "hours": ["08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
+    "matrix": [
+      [28, 35, 52, 61, 74, 68, 72, 79, 76, 58, 42, 38, 30],
+      [12, 22, 38, 45, 40, 35, 48, 52, 44, 30, 22, 18, 14],
+      [45, 55, 62, 70, 88, 82, 78, 74, 68, 55, 48, 50, 42],
+      [20, 28, 48, 55, 50, 46, 58, 62, 55, 40, 32, 28, 22],
+      [8, 15, 25, 32, 28, 24, 30, 35, 32, 24, 18, 16, 12],
+      [18, 25, 38, 42, 36, 32, 40, 45, 40, 28, 22, 20, 16]
+    ]
+  },
+  "iot": {
+    "devices": [
+      { "id": "co2-01", "label": "CO₂ — Library", "type": "Air quality", "status": "online", "battery": 92 },
+      { "id": "occ-12", "label": "Occupancy mesh — A wing", "type": "Presence", "status": "online", "battery": null },
+      { "id": "th-07", "label": "Temp / humidity — Lab B2", "type": "Climate", "status": "online", "battery": 78 },
+      { "id": "plug-03", "label": "Smart plug — AV rack", "type": "Power", "status": "online", "battery": null },
+      { "id": "lux-02", "label": "Lux sensor — Quiet zone", "type": "Lighting", "status": "degraded", "battery": 41 },
+      { "id": "gw-01", "label": "LoRa gateway — Roof", "type": "Gateway", "status": "online", "battery": null }
+    ]
+  },
+  "settings": {
+    "ecoModeDefault": true,
+    "notifyHighOccupancy": true,
+    "dataRefreshSeconds": 15
+  }
+}
