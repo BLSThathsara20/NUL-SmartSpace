@@ -1,6 +1,9 @@
 import { Battery, Cpu, Wifi } from "lucide-react";
+import { useDetailModal } from "../context/useDetailModal.js";
 
 export function IotStrip({ devices }) {
+	const { openModal } = useDetailModal();
+
 	return (
 		<div className="rounded-2xl border border-emerald-500/15 bg-slate-900/50 p-4 shadow-[0_0_24px_rgba(16,185,129,0.06)]">
 			<div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -14,14 +17,61 @@ export function IotStrip({ devices }) {
 					Live stream
 				</span>
 			</div>
+			<p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-slate-500">
+				Click a device for sensor details
+			</p>
 			<div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
 				{devices.map((d) => {
 					const online = d.status === "online";
 					const degraded = d.status === "degraded";
+					const statusLabel =
+						d.status === "online"
+							? "Online"
+							: d.status === "degraded"
+								? "Degraded link"
+								: "Offline";
+
 					return (
-						<div
+						<button
 							key={d.id}
-							className="flex items-center justify-between gap-2 rounded-xl border border-white/5 bg-slate-950/60 px-3 py-2.5 ring-1 ring-white/5"
+							type="button"
+							onClick={() =>
+								openModal({
+									title: d.label,
+									subtitle: `${d.type} · ${d.id}`,
+									content: (
+										<div className="space-y-3 text-slate-300">
+											<dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-xs">
+												<dt className="text-slate-500">Status</dt>
+												<dd className="font-medium text-slate-100">
+													{statusLabel}
+												</dd>
+												<dt className="text-slate-500">Device type</dt>
+												<dd>{d.type}</dd>
+												<dt className="text-slate-500">Device ID</dt>
+												<dd className="font-mono text-emerald-200/90">{d.id}</dd>
+												{d.battery != null ? (
+													<>
+														<dt className="text-slate-500">Battery</dt>
+														<dd className="tabular-nums">{d.battery}%</dd>
+													</>
+												) : (
+													<>
+														<dt className="text-slate-500">Power</dt>
+														<dd>Mains or gateway-powered</dd>
+													</>
+												)}
+											</dl>
+											<p className="text-xs text-slate-500">
+												This row mirrors what an edge gateway would stream:
+												health, power source, and last sample quality. Demo data
+												only.
+											</p>
+										</div>
+									),
+								})
+							}
+							className="flex w-full items-center justify-between gap-2 rounded-xl border border-white/5 bg-slate-950/60 px-3 py-2.5 text-left ring-1 ring-white/5 transition-colors hover:border-emerald-500/25 hover:bg-slate-900/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/40"
 						>
 							<div className="min-w-0 flex-1">
 								<p className="truncate text-xs font-medium text-slate-200">
@@ -52,7 +102,7 @@ export function IotStrip({ devices }) {
 									) : null}
 								</span>
 							</div>
-						</div>
+						</button>
 					);
 				})}
 			</div>

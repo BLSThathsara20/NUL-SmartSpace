@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { Radio } from "lucide-react";
+import { DetailModalProvider } from "./context/DetailModalProvider.jsx";
+import { FloatingHelpButton } from "./components/FloatingHelpButton.jsx";
 import { Sidebar } from "./components/Sidebar.jsx";
 import { MobileNav } from "./components/MobileNav.jsx";
 import { useLiveDashboard } from "./hooks/useLiveDashboard.js";
@@ -42,6 +44,7 @@ export default function App() {
 	}
 
 	return (
+		<DetailModalProvider>
 		<div className="min-h-screen bg-slate-950 text-slate-200">
 			<div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(16,185,129,0.18),transparent)]" />
 			<div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_60%_40%_at_100%_100%,rgba(52,211,153,0.08),transparent)]" />
@@ -93,6 +96,8 @@ export default function App() {
 					<main className="flex-1 px-4 py-6 lg:px-8 lg:py-8">{page}</main>
 				</div>
 			</div>
+			<FloatingHelpButton />
 		</div>
+		</DetailModalProvider>
 	);
 }

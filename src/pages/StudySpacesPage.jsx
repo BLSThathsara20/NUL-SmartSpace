@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { Lightbulb, Search, Thermometer } from "lucide-react";
+import { ModalBodyParagraphs } from "../components/ModalBodyParagraphs.jsx";
+import { useDetailModal } from "../context/useDetailModal.js";
 
 function roomStatus(occupied, capacity) {
 	const ratio = occupied / Math.max(capacity, 1);
@@ -10,6 +12,7 @@ function roomStatus(occupied, capacity) {
 }
 
 export function StudySpacesPage({ data }) {
+	const { openModal } = useDetailModal();
 	const rooms = data.studySpaces.rooms;
 	const [query, setQuery] = useState("");
 	const [availability, setAvailability] = useState("all");
@@ -42,7 +45,8 @@ export function StudySpacesPage({ data }) {
 					Study spaces
 				</h1>
 				<p className="mt-1 text-sm text-slate-400">
-					Room telemetry from seats, climate, and lighting controllers.
+					Room telemetry from seats, climate, and lighting controllers. Click a
+					card for full room context.
 				</p>
 			</div>
 
@@ -85,10 +89,46 @@ export function StudySpacesPage({ data }) {
 			<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
 				{filtered.map((room) => {
 					const status = roomStatus(room.occupied, room.capacity);
+					const ratioPct = Math.round(
+						(100 * room.occupied) / Math.max(room.capacity, 1),
+					);
 					return (
-						<div
+						<button
 							key={room.id}
-							className="group relative overflow-hidden rounded-2xl border border-emerald-500/12 bg-slate-900/55 p-5 shadow-[0_0_0_1px_rgba(15,23,42,0.5)] transition-all duration-300 hover:border-emerald-400/25 hover:shadow-[0_0_28px_rgba(16,185,129,0.1)]"
+							type="button"
+							onClick={() =>
+								openModal({
+									title: room.name,
+									subtitle: `${room.type} · ${room.id}`,
+									content: (
+										<div className="space-y-4 text-slate-300">
+											<dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-xs">
+												<dt className="text-slate-500">Status</dt>
+												<dd className="font-medium text-slate-100">
+													{status.label}
+												</dd>
+												<dt className="text-slate-500">Occupancy</dt>
+												<dd className="tabular-nums">
+													{room.occupied} / {room.capacity} seats ({ratioPct}%)
+												</dd>
+												<dt className="text-slate-500">Temperature</dt>
+												<dd className="tabular-nums">{room.tempC}°C</dd>
+												<dt className="text-slate-500">Lighting</dt>
+												<dd>{room.lighting}</dd>
+												<dt className="text-slate-500">HVAC zone</dt>
+												<dd>{room.hvacZone}</dd>
+											</dl>
+											<ModalBodyParagraphs
+												paragraphs={[
+													"This card aggregates mock desk counts, climate probes, and lighting scenes for the room. In a full deployment, bookings and card-swipe data could enrich the story.",
+													"Use the filters above to slice by availability or room type; the modal always reflects the latest simulated values on the card.",
+												]}
+											/>
+										</div>
+									),
+								})
+							}
+							className="group relative w-full overflow-hidden rounded-2xl border border-emerald-500/12 bg-slate-900/55 p-5 text-left shadow-[0_0_0_1px_rgba(15,23,42,0.5)] transition-all duration-300 hover:border-emerald-400/25 hover:shadow-[0_0_28px_rgba(16,185,129,0.1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/45"
 						>
 							<div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-emerald-500/10 blur-2xl opacity-70 transition-opacity group-hover:opacity-100" />
 							<div className="relative flex items-start justify-between gap-2">
@@ -135,7 +175,10 @@ export function StudySpacesPage({ data }) {
 									HVAC {room.hvacZone}
 								</span>
 							</div>
-						</div>
+							<p className="relative mt-3 text-[10px] font-medium uppercase tracking-wider text-emerald-500/50 group-hover:text-emerald-400/80">
+								Click for full details
+							</p>
+						</button>
 					);
 				})}
 			</div>

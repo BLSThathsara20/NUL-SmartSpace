@@ -1,3 +1,6 @@
+import { ModalBodyParagraphs } from "../components/ModalBodyParagraphs.jsx";
+import { useDetailModal } from "../context/useDetailModal.js";
+
 function cellClass(value) {
 	if (value < 30)
 		return "bg-emerald-500/25 text-emerald-50 border-emerald-500/30";
@@ -9,7 +12,22 @@ function cellClass(value) {
 }
 
 export function PredictionsPage({ data }) {
+	const { openModal } = useDetailModal();
 	const { rooms, hours, matrix } = data.predictions;
+
+	const heatmapModal = {
+		title: "Occupancy prediction heatmap",
+		subtitle: "How to read this table",
+		content: (
+			<ModalBodyParagraphs
+				paragraphs={[
+					"Rows are rooms or zones; columns are clock hours. Each cell is a forecasted demand score from roughly 0 (very quiet) to 100 (very busy).",
+					"Green cells suggest easy study sessions; amber and red cells flag when you might queue for seats or need extra staffing.",
+					"Data is static JSON in this demo—production would refresh from your forecasting model as new bookings and Wi-Fi presence arrive.",
+				]}
+			/>
+		),
+	};
 
 	return (
 		<div className="space-y-6">
@@ -19,10 +37,27 @@ export function PredictionsPage({ data }) {
 				</h1>
 				<p className="mt-1 text-sm text-slate-400">
 					Hourly demand forecast by room — green is quiet, red is high demand.
+					Click the heatmap panel for a full explanation.
 				</p>
 			</div>
 
-			<div className="overflow-x-auto rounded-2xl border border-emerald-500/15 bg-slate-900/50 shadow-[0_0_28px_rgba(16,185,129,0.06)]">
+			<div
+				role="button"
+				tabIndex={0}
+				className="cursor-pointer overflow-x-auto rounded-2xl border border-emerald-500/15 bg-slate-900/50 shadow-[0_0_28px_rgba(16,185,129,0.06)] transition-colors hover:border-emerald-400/30 hover:shadow-[0_0_32px_rgba(16,185,129,0.1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/45"
+				onClick={() => openModal(heatmapModal)}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						if (e.key === " ") e.preventDefault();
+						openModal(heatmapModal);
+					}
+				}}
+			>
+				<div className="border-b border-white/10 bg-slate-950/80 px-3 py-2">
+					<p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-400/80">
+						Click anywhere on the table for details
+					</p>
+				</div>
 				<table className="w-full min-w-[640px] border-collapse text-sm">
 					<thead>
 						<tr className="border-b border-white/10 bg-slate-950/80">
